@@ -6,7 +6,9 @@ import 'package:udemy_flutter_delivery/src/pages/register/register_page.dart';
 import 'package:udemy_flutter_delivery/src/pages/terms/terms_and_conditions_%20page.dart';
 import 'package:get_storage/get_storage.dart';
 
+import 'src/models/user.dart';
 
+User userSession = User.fromJson(GetStorage().read("user")??{});
 void main() async {
   await GetStorage.init();
   runApp(const Myapp());
@@ -33,7 +35,7 @@ class _MyappState extends State<Myapp> {
       title: "Deliveri Udemy",
       //Quitar de de demo arriba
       debugShowCheckedModeBanner: false,
-      initialRoute: "/",
+      initialRoute: userSession.id != null ? "/home" : "/",//Si user session es diferente que null entonces llevelo a Home si no llevelo a /
       getPages: [// En este apartado es donde seteo las rutas para las diferentes paginas de mi app
         GetPage(name: "/", page: () => LoginPage()),
         GetPage(name: "/register", page: () => RegisterPage()),

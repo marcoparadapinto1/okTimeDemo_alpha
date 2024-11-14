@@ -17,7 +17,7 @@ class RegisterPage extends StatelessWidget {
         children: [
           _backgroundCover(context),
           _boxForm(context),
-          _imageUser(),
+          _imageUser(context),
           _buttonBack(),
         ],
       ),
@@ -77,14 +77,16 @@ class RegisterPage extends StatelessWidget {
   }
 
   // Widget para la imagen de usuario
-  Widget _imageUser() {
+  Widget _imageUser(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 30),
+      margin: EdgeInsets.only(top: 30),
       alignment: Alignment.topCenter,
       child: GestureDetector(
-        onTap: () {},
-        child: const CircleAvatar(
-          backgroundImage: AssetImage("assets/img/user_profile.png"),
+        onTap: () => controller.showAlertDialog(context),
+        child: CircleAvatar(
+          backgroundImage: controller.imageFile != null
+              ? FileImage(controller.imageFile!)
+              :AssetImage("assets/img/user_profile.png")as ImageProvider,
           radius: 60,
           backgroundColor: Colors.white,
         ),

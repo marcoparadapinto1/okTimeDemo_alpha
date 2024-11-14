@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:udemy_flutter_delivery/src/models/user.dart';
 import 'package:udemy_flutter_delivery/src/providers/users_provider.dart';
 
@@ -15,6 +18,8 @@ class RegisterController extends GetxController{
   RxBool isTermsAccepted = false.obs;
   RxBool isPasswordVisible = true.obs; // Inicialmente la contraseña está oculta
   UsersProvider usersProvider = UsersProvider();
+  ImagePicker picker = ImagePicker();
+  File? imageFile;
 
   //Metodo que disparara al servidor para validar la base de datos
   void register() async{//Este sera un metodo asincronico para que sea ejecutado solo cuando sea necesario
@@ -40,7 +45,7 @@ class RegisterController extends GetxController{
       );
       Response response = await usersProvider.create(user);
       print("Respuesta ${response.body}");
-      Get.snackbar("Formualrio valido", "Estas listo para enviar la peticion http");
+      Get.snackbar("Usuario creado con exito", "Ya puedes iniciar sesion");
     }
 
   }
@@ -86,7 +91,38 @@ class RegisterController extends GetxController{
     }
     return true;
   }
-
+  Future selectImage(ImageSource imageSource) async{
+    XFile? image = await picker.pickImage(source: imageSource);
+    if (image != null){
+      imageFile = File(image.path);
+    }
+  }
+  void showAlertDialog (BuildContext context){
+    Widget galleryButton = ElevatedButton(
+        onPressed: (){
+          Get.back();
+          selectImage(ImageSource.gallery);
+        },
+        child: Text("Galeria")
+    );
+    Widget cameraButton = ElevatedButton(
+        onPressed: (){
+          Get.back();
+          selectImage(ImageSource.camera);
+        },
+        child: Text("Camara")
+    );
+    AlertDialog alertDialog = AlertDialog(
+      title: Text("Selecciona un opcion"),
+      actions: [
+        galleryButton,
+        cameraButton
+      ],
+    );
+    showDialog(context: context, builder: (BuildContext context){
+      return alertDialog;
+    });
+  }
 }
 
 

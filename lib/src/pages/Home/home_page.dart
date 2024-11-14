@@ -8,9 +8,12 @@ HomeController con = Get.put(HomeController());
   HomePage({super.key});
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text("Home Page"),
+        child: ElevatedButton(
+          onPressed: () => con.singOut(),
+          child: Text("Cerrar Sesion"),
+        )
       ),
     );
   }
