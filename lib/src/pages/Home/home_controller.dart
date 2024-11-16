@@ -9,8 +9,8 @@ class HomeController extends GetxController{
     print("Usuario de sesion: ${user.toJson()}");
   }
 
-  void singOut(){
-    GetStorage().remove("user");
+  void singOut()async{
+    await GetStorage().remove("user");
     Get.offNamedUntil("/",(route)=> false);//Elimina el historial de pantallas
   }
 }

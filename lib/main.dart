@@ -8,9 +8,10 @@ import 'package:get_storage/get_storage.dart';
 
 import 'src/models/user.dart';
 
-User userSession = User.fromJson(GetStorage().read("user")??{});
+User userSession = User();
 void main() async {
   await GetStorage.init();
+  await GetStorage().remove("user");
   runApp(const Myapp());
 }
 
@@ -27,15 +28,18 @@ class _MyappState extends State<Myapp> {
   void initState() {
     // TODO: implement initState  (Aqui esdonde se inicia lo primero de la app)
     super.initState();
+    userSession = User.fromJson(GetStorage().read('user') ?? {});
+
   }
    //metodo que contruye las vistas
   @override
   Widget build(BuildContext context) {
+
     return GetMaterialApp(
-      title: "Deliveri Udemy",
+      title: "OkTime",
       //Quitar de de demo arriba
       debugShowCheckedModeBanner: false,
-      initialRoute: userSession.id != null ? "/home" : "/",//Si user session es diferente que null entonces llevelo a Home si no llevelo a /
+      initialRoute: "/",//Si user session es diferente que null entonces llevelo a Home si no llevelo a /
       getPages: [// En este apartado es donde seteo las rutas para las diferentes paginas de mi app
         GetPage(name: "/", page: () => LoginPage()),
         GetPage(name: "/register", page: () => RegisterPage()),
