@@ -5,7 +5,9 @@ import 'package:udemy_flutter_delivery/src/pages/login/login_page.dart';
 import 'package:udemy_flutter_delivery/src/pages/register/register_page.dart';
 import 'package:udemy_flutter_delivery/src/pages/terms/terms_and_conditions_%20page.dart';
 import 'package:get_storage/get_storage.dart';
-
+import 'package:udemy_flutter_delivery/src/pages/map/map_controller.dart';
+import 'package:udemy_flutter_delivery/src/pages/map/map_binding.dart';
+import 'package:udemy_flutter_delivery/src/pages/map/map_page.dart';
 import 'src/models/user.dart';
 
 User userSession = User();
@@ -21,7 +23,12 @@ class Myapp extends StatefulWidget {
   @override
   State<Myapp> createState() => _MyappState();
 }
-
+class MapBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => MapController()); // Inicializa el controlador aquí
+  }
+}
 class _MyappState extends State<Myapp> {
 
   @override
@@ -45,7 +52,7 @@ class _MyappState extends State<Myapp> {
         GetPage(name: "/register", page: () => RegisterPage()),
         GetPage(name: '/terms_and_cond', page: () => TermsAndConditionsPage()),
         GetPage(name: "/home", page: () => HomePage()),
-
+        GetPage(name: "/map", page: () => MapPage(), binding: MapBinding()),
       ],
       theme: ThemeData(//Se establecen los colores predterminados segun el modelo de movil para cuando se precionan o marcan los text field etc
         primaryColor: Colors.red,//Se define el color primario

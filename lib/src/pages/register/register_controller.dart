@@ -1,8 +1,11 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
 import 'package:udemy_flutter_delivery/src/models/user.dart';
 import 'package:udemy_flutter_delivery/src/providers/users_provider.dart';
 
@@ -22,7 +25,7 @@ class RegisterController extends GetxController{
   File? imageFile;
 
   //Metodo que disparara al servidor para validar la base de datos
-  void register() async{//Este sera un metodo asincronico para que sea ejecutado solo cuando sea necesario
+  void register(BuildContext context) async{//Este sera un metodo asincronico para que sea ejecutado solo cuando sea necesario
     //Capturamos con un string los datos que ingrese el usuario
     String email = emailController.text.trim();//El metodo trim es para que no permita bits vacios es decir no aceptara el espacio como dato
     String name = nameController.text;
@@ -35,17 +38,24 @@ class RegisterController extends GetxController{
     print("password$password");
 
 
-    if (isValidForm(email,name,lastName,phone, password,confirmPassword)){
-      User user = User(
-        email: email,
-        name : name,
-        lastName: lastName,
-        phone: phone,
-        password: password,
-      );
-      Response response = await usersProvider.create(user);
-      print("Respuesta ${response.body}");
-      Get.snackbar("Usuario creado con exito", "Ya puedes iniciar sesion");
+    if (isValidForm(email, name, lastName, phone, password, confirmPassword)) {
+      ProgressDialog progressDialog = ProgressDialog(context: context);
+      progressDialog.show(max: 100, msg: "Registrando Datos...");
+
+      try { // Envuelve el proceso de registro en un try-catch
+        User user = User(
+          email: email,
+          name: name,
+          lastName: lastName,
+          phone: phone,
+          password: password,
+        );
+        Response response = await usersProvider.create(user);
+        print("Respuesta ${response.body}");
+        Get.snackbar("Usuario creado con exito", "Ya puedesiniciar sesion");
+      } finally { // Cierra el ProgressDialog en el finally
+        progressDialog.close();
+      }
     }
 
   }
@@ -95,6 +105,7 @@ class RegisterController extends GetxController{
     XFile? image = await picker.pickImage(source: imageSource);
     if (image != null){
       imageFile = File(image.path);
+      update();
     }
   }
   void showAlertDialog (BuildContext context){

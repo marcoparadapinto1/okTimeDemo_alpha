@@ -57,7 +57,7 @@ class RegisterPage extends StatelessWidget {
             _txtpass(),
             _txtpassConfirm(),
             _termsAndConditionsCheckbox(),
-            _btnRegister(),
+            _btnRegister(context),
           ],
         ),
       ),
@@ -83,13 +83,16 @@ class RegisterPage extends StatelessWidget {
       alignment: Alignment.topCenter,
       child: GestureDetector(
         onTap: () => controller.showAlertDialog(context),
-        child: CircleAvatar(
-          backgroundImage: controller.imageFile != null
-              ? FileImage(controller.imageFile!)
-              :AssetImage("assets/img/user_profile.png")as ImageProvider,
-          radius: 60,
-          backgroundColor: Colors.white,
-        ),
+        child: GetBuilder<RegisterController>(
+          builder: (value)=>CircleAvatar(
+            backgroundImage: controller.imageFile != null
+                ? FileImage(controller.imageFile!)
+                :AssetImage("assets/img/user_profile.png")as ImageProvider,
+            radius: 60,
+            backgroundColor: Colors.white,
+          ),
+
+        )
       ),
     );
   }
@@ -289,12 +292,12 @@ class RegisterPage extends StatelessWidget {
   }
 
   // Widget para el botón de registro
-  Widget _btnRegister() {
+  Widget _btnRegister(BuildContext context) {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 5),
       child: ElevatedButton(
-        onPressed: () => controller.register(),
+        onPressed: () => controller.register(context),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.red,
           padding: const EdgeInsets.symmetric(vertical: 15),

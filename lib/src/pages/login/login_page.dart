@@ -80,7 +80,7 @@ class LoginPage extends StatelessWidget {
   Widget _btnLogin (){
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.symmetric(horizontal: 40,vertical: 40),
+      margin: const EdgeInsets.symmetric(horizontal: 40,vertical: 20),
       child: ElevatedButton(//Este evento hara que el boton tenga dinamismoen sus estados, por ejemplo precionar etc
           onPressed: () => controller.login(),//Este evento es el que gatilla por medio de pulsaciones (Es como el onclick en kotlin) en este caso lo declaramos como funcion vacia con los parentesis vacios
           style: ElevatedButton.styleFrom(
@@ -117,7 +117,8 @@ class LoginPage extends StatelessWidget {
             _txtTitle(),
             _txtUser(),
             _txtpass(),
-            _btnLogin()
+            _btnLogin(),
+            _buttonMap(context),
           ],
         ),
       ),
@@ -190,4 +191,27 @@ class LoginPage extends StatelessWidget {
       ),
     );
   }
+  Widget _buttonMap(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+      child: ElevatedButton(
+        onPressed: () {
+          Get.toNamed('/map');
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.blue,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          padding: EdgeInsets.symmetric(vertical: 15),
+        ),
+        child: Text(
+          'Ir a Mapas',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+    );
+  }
 }
+
